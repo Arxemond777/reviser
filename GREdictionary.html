@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <script type="text/javascript"
+          src="dictionaries/GREDictionary.js?version=1"></script>
+</head>
+<body>
+<div id="containerMain"></div>
+<link rel="stylesheet" type="text/css" href="css/css.css?version=1">
+
+<title></title>
+<script type="text/javascript" src="lib/Jquery.js"></script>
+<script src="service/generalFunction.js?version=2"></script>
+<script type="text/javascript">
+  $(function () {
+    function addScript(src, callback) {
+      var s = document.createElement('script');
+      s.setAttribute('src', src);
+      s.onload = callback;
+      document.head.appendChild(s);
+    }
+
+    addScript('service/variables.js', () => {
+      main();
+    });
+  });
+</script>
+<div id='startInfo'></div><div id="imgContentDiv" style="visibility: hidden; position: absolute"><img src="" id="imgContent" alt="" width="270" height="300"></div>
+<div id="wordEnglish" style=""></div>
+<div id="quantity" style="margin-top: 10px"></div>
+<div id="prompt" style="margin-top: 10px"></div>
+<input id="audioTranslate" type='button' height="30" value='🔊 Play'/>
+<div style="margin-top: 10px" id="author">By Iurii Glushenkov</div>
+<div id="token"></div>
+<script>
+</script>
+</body>
+</html>

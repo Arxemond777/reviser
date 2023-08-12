@@ -1,0 +1,48 @@
+.inner {
+    font-size: 20px
+}
+
+#wordEnglish {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 30px;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: purple;
+}
+
+#audioTranslate, #audioTranslate1 {
+    background: #3498db;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+    margin-left: 75%;
+}
+
+#audioTranslate1 {
+    position: absolute;
+    margin-top: -7%;
+}
+
+*:focus {
+    outline: none;
+}
+
+.ui-loader {
+    display: none !important;
+}
+
+.route {
+    font-size: 12px;
+}
+
