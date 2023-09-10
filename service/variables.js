@@ -226,6 +226,7 @@ class TextToAudioService {
         TextToAudioUtilClass.preprocessTextForConvertingToAudio(word, excludeTranscription);
     }
 
+    static cnt = 0; // for tests
     async speak(text, options = {}) {
         // console.log(typeof text )
         if (this.#isSpeaking) this.cancel();
@@ -249,6 +250,7 @@ class TextToAudioService {
             this.#currentUtterance.onend = () => {
                 this.#isSpeaking = false;
                 this.status = 'fulfilled';
+                TextToAudioService.cnt++;
                 resolve();
             };
 
@@ -579,3 +581,23 @@ class EventHandlerService {
 function main() {
     new EventHandlerService(words)
 }
+
+// Export all functions, classes, or objects
+// module.exports = {
+//     DesktopJQueryUI,
+//     InterfaceUI,
+//     TextToAudioService,
+//     SpeechSynthesisUtterance,
+// };
+
+class MySpeechSynthesis {
+    constructor() {
+        this.utterance = new SpeechSynthesisUtterance('Hello, world!');
+    }
+}
+
+exports.MySpeechSynthesis = MySpeechSynthesis;
+exports.DesktopJQueryUI = DesktopJQueryUI
+exports.InterfaceUI = InterfaceUI
+exports.TextToAudioService = TextToAudioService
+// exports.SpeechSynthesisUtterance = window.SpeechSynthesisUtterance
