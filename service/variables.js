@@ -39,7 +39,7 @@ const InterfaceUI = {
     promptIdSelector: "#prompt",
     tokenIdSelector: "#token",
     quantityIdSelector: "#quantity",
-    startIdSelector: "#startInfo",
+    startIdSelector: "#help",
     audioTranslateIdSelector: "#audioTranslate",
 
     bodySelector: "body",
@@ -96,7 +96,7 @@ const InterfaceUI = {
  * Can be created another version for React, Angular and other frameworks
  * based on {@link InterfaceUI}
  */
-class DesktopJQueryUI  {
+class DesktopJQueryUI {
     constructor() {
         this.startInfo = $(InterfaceUI.startIdSelector);
         this.setBackground();
@@ -161,7 +161,7 @@ class DesktopJQueryUI  {
  * Can be created another version for React, Angular and other frameworks
  * based on {@link InterfaceUI}
  */
-class MobileJQueryUI  extends DesktopJQueryUI  {
+class MobileJQueryUI extends DesktopJQueryUI {
     constructor() {
         super();
     }
@@ -209,7 +209,7 @@ const TextToAudioInterface = {
     }
 }
 
-class TextToAudioService  {
+class TextToAudioService {
     #synth = window.speechSynthesis;
     #isSpeaking = false;
     #currentUtterance = null;
@@ -228,9 +228,7 @@ class TextToAudioService  {
 
     async speak(text, options = {}) {
         // console.log(typeof text )
-        if (this.#isSpeaking) {
-            this.cancel();
-        }
+        if (this.#isSpeaking) this.cancel();
 
         const {voice, rate, pitch} = options;
 
@@ -268,14 +266,17 @@ class TextToAudioService  {
         return promise;
     }
 
-    cancel(warningColor = InterfaceUI.warningColor, defColor = InterfaceUI.audioTranslateColorDef) {
+    async cancel(warningColor = InterfaceUI.warningColor, defColor = InterfaceUI.audioTranslateColorDef) {
         if (this.#isSpeaking) {
             this._UI.css(this.#audioToTextSelector, {"background": warningColor});
-            setTimeout(() => {
-                this._UI.css(this.#audioToTextSelector, {"background": defColor});
-            }, 1000);
+            let $this = this;
+            if (this.timeout === undefined) {
+                this.timeout = setTimeout(() => {
+                    this._UI.css(this.#audioToTextSelector, {"background": defColor});
+                    $this.timeout = undefined;
+                }, 1000);
+            }
             this.#synth.cancel();
-            this.#isSpeaking = false;
             this.#abortController.abort();
         }
     }
@@ -289,11 +290,11 @@ class TextToAudioService  {
 
 class TextToAudioUtilClass {
     static preprocessTextForConvertingToAudio(wordForPronunciation,
-                 excludeTranscription = false,
-                 callback =
-                     function (text, selector = InterfaceUI.audioTranslateIdSelector) {
-        $(selector).attr(InterfaceUI.textToAudioTextAttribute, text);
-    }) {
+                                              excludeTranscription = false,
+                                              callback =
+                                                  function (text, selector = InterfaceUI.audioTranslateIdSelector) {
+                                                      $(selector).attr(InterfaceUI.textToAudioTextAttribute, text);
+                                                  }) {
 
         wordForPronunciation =
             !!wordForPronunciation
@@ -319,11 +320,13 @@ class SynonymsSearchService {
     #token;
     #UI;
     #dict;
+
     constructor(token, UI, dict) {
         this.#token = token;
         this.#UI = UI;
         this.#dict = dict;
     }
+
     searchSynonyms(word, right, idx) {
         if (!!!this.#token) return;
 
@@ -399,9 +402,10 @@ class SynonymsSearchService {
         // The Fisher-Yates algorithm but with some changes
         for (let i = start; i > end; i--) {
             var j = 0;
-            if (end == 0) // the standard Fisher-Yates`s alg
+            // the standard Fisher-Yates`s alg
+            if (end == 0)
                 j = Math.floor(Math.random() * (i + 1));
-            else // the improved not Fisher-Yates`s alg
+            else
                 j = Math.ceil(Math.random() * (start - end) + end);
             var temp = array[i];
             array[i] = array[j];
@@ -438,7 +442,7 @@ class EventHandlerService {
         }
         this.#dict = dict;
         if (this.#notDesktop)
-            this.#UI = new MobileJQueryUI ();
+            this.#UI = new MobileJQueryUI();
         else
             this.#UI = new DesktopJQueryUI();
 
@@ -446,8 +450,8 @@ class EventHandlerService {
 
         this.init();
 
-        this.#textToAudio = new TextToAudioService (this.#UI, InterfaceUI.audioTranslateIdSelector);
-        TextToAudioService .init(this.#textToAudio, InterfaceUI.audioTranslateIdSelector);
+        this.#textToAudio = new TextToAudioService(this.#UI, InterfaceUI.audioTranslateIdSelector);
+        TextToAudioService.init(this.#textToAudio, InterfaceUI.audioTranslateIdSelector);
 
         this.#synonymsSearch = new SynonymsSearchService(this.#token, this.#UI, this.#dict);
 
@@ -563,7 +567,7 @@ class EventHandlerService {
             this.#UI.html(InterfaceUI.promptIdSelector, this.#prompt + ' / ' + this.#quantity + ' (' + percentagePrompt.toFixed(1) + '% hints)');
             setTimeout(() => {
                 this.#UI.html(InterfaceUI.promptIdSelector, "");
-            }, EventHandlerService.timeForHideSelectorInSeconds * 1000);
+            }, EventHandlerService.timeForHideSelectorInSeconds * 10000000);
         }
 
         if (this.#notDesktop) {
