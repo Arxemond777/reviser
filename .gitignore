@@ -1,2 +1,59 @@
 *.iml
 .idea
+# Node.js
+tests/node_modules/
+npm-debug.log
+yarn-error.log
+
+# Dependency directories
+/jspm_packages/
+/bower_components/
+
+# Logs and databases
+logs/
+*.log
+*.sqlite
+
+# Testing files
+coverage/
+.nyc_output/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Visual Studio Code
+.vscode/
+
+# IDEA / Webstorm
+.idea/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.springBeans
+
+# Test output
+test-output/
+
+# Jest
+# Ignore Jest's test results and cache directories
+jest-haste-map/
+jest-transform-cache/
+node_modules/
+
+# Cypress
+# Ignore Cypress's binaries and video recordings
+Cypress/
+
+# Mocha, Jasmine
+# Ignore Mocha's test results and coverage directories
+test-results/
+coverage/
+
+# AVA
+# Ignore AVA's test results directory
+ava-results/
