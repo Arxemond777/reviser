@@ -51,10 +51,10 @@ async function runTest() {
         await sleep(100);
         for (let i = 0; i < 3; i++) {
             await buttonElement.click();
-            await sleep(200);
+            await sleep(150);
         }
 
-        await sleep(3000);
+        await sleep(6000);
         cntValue = await driver.executeScript(`return ${cntName};`);
         console.log(">>>" + cntValue);
         assert.equal(cntValue, 1);

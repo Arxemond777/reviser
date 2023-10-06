@@ -40,7 +40,12 @@ const InterfaceUI = {
     tokenIdSelector: "#token",
     quantityIdSelector: "#quantity",
     startIdSelector: "#help",
+    startImgIdSelector: "#helpImg",
     audioTranslateIdSelector: "#audioTranslate",
+
+    hintButton: "#hintButton",
+    nextButton: "#nextButton",
+    statButton: "#statButton",
 
     bodySelector: "body",
 
@@ -103,6 +108,11 @@ class DesktopJQueryUI {
     }
 
     drawTheDefHints() {
+        $(InterfaceUI.startIdSelector).toggle();
+        $(InterfaceUI.startImgIdSelector).on("click", () => {
+            $(InterfaceUI.startIdSelector).toggle();
+        });
+
         this.append(this.startInfo,
             '* press button "->" (arrow right) to see next word <br>' +
             '* press button "<-" (arrow left) to see the hint for the current words <br><br>' +
@@ -303,8 +313,10 @@ class TextToAudioUtilClass {
                 ? wordForPronunciation.toLowerCase()
                 : "";
 
-        if (!!wordForPronunciation && excludeTranscription === true) // replace all transcription ([lala] -> '') and slash (/ -> '') and minus (- -> '')
-            wordForPronunciation = wordForPronunciation.replace(/(\[[^\]]*\])|(\/)|(-)/gm, " ");
+        // replace all transcription ([lala] -> '') and slash (/ -> '') and minus (- -> '')
+        if (!!wordForPronunciation && excludeTranscription === true)
+            wordForPronunciation =
+                wordForPronunciation.replace(/(\[[^\]]*\])|(\/)|(-)/gm, " ");
 
         wordForPronunciation = wordForPronunciation.replace(/([ЁёА-я]*)/gm, ""); // replace all russian words
 
@@ -466,6 +478,16 @@ class EventHandlerService {
             EventHandlerService.instance.keyHandler(event.keyCode);
         });
 
+        $(InterfaceUI.hintButton).on("click", () => {
+            EventHandlerService.instance.keyHandler(37);
+        });
+        $(InterfaceUI.nextButton).on("click", () => {
+            EventHandlerService.instance.keyHandler(39);
+        });
+        $(InterfaceUI.statButton).on("click", () => {
+            EventHandlerService.instance.keyHandler(79);
+        });
+
         this.#UI.toggle(InterfaceUI.quantityIdSelector); // hide by def
 
         // ?token=true search synonyms
@@ -590,13 +612,13 @@ function main() {
 //     SpeechSynthesisUtterance,
 // };
 
-class MySpeechSynthesis {
-    constructor() {
-        this.utterance = new SpeechSynthesisUtterance('Hello, world!');
-    }
-}
+// class MySpeechSynthesis {
+//     constructor() {
+//         this.utterance = new SpeechSynthesisUtterance('Hello, world!');
+//     }
+// }
 
-exports.MySpeechSynthesis = MySpeechSynthesis;
+// exports.MySpeechSynthesis = MySpeechSynthesis;
 exports.DesktopJQueryUI = DesktopJQueryUI
 exports.InterfaceUI = InterfaceUI
 exports.TextToAudioService = TextToAudioService
